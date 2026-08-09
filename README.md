@@ -73,17 +73,21 @@ A temporal expanding-window validation strategy was used instead of a random tra
 
 The final log-target CatBoost model achieved:
 ```
-Metric|	Average
-MAE|	$107.15
-RMSE|	$626.96
-R²|	0.8271
+| Metric | Average |
+|---|---:|
+|MAE|$107.15|
+|RMSE|$626.96|
+|R²|0.8271|
+```
 Temporal validation
-Fold|	Training Rows	Validation Rows	MAE	RMSE	R²
-July|	28,806	4,912	$111.25	$627.26	0.8262
-August|	33,718	4,759	$99.21	$615.09	0.8261
-September|	38,477	4,670	$110.62	$619.04	0.8349
-October|	43,147	4,853	$107.51	$646.44	0.8211
-Average	—	—	$107.15	$626.96	0.8271
+```
+|Fold|	Training| Rows|	Validation| Rows|MAE|RMSE|R²|
+|---|---|---|---|---|---|---|---:|
+|July|	28,806	|4,912	|$111.25|$627.26|0.8262
+|August|	|33,718	|4,759	|$99.21	|$615.09|0.8261|
+|September|	|38,477	|4,670	|$110.62|$619.04|0.8349|
+|October|	|43,147	|4,853	|$107.51|$646.44|0.8211|
+|Average|	|—	|—	|$107.15|$626.96|0.8271|
 ```
 The temporal validation approach was chosen to better represent the real-world scenario of predicting future freight rates from historical observations.
 
@@ -155,7 +159,7 @@ The experiments showed that adding a large number of engineered features did not
 
 This led to a preference for the simpler feature representation used by the final model.
 
-##Model Experiments
+## Model Experiments
 
 Several CatBoost configurations were evaluated.
 
@@ -246,16 +250,6 @@ The file contains:
 0 missing IDs
 0 missing predictions
 0 non-positive predictions
-
-
-Also, for December, `predicted_rate` is correct because that is the **output column** in `december-chart-inputs.csv`.
-
-So your terminology should consistently be:
-
-**Training target → `posted_rate`**  
-**Model output / submission → `predicted_rate`**
-
-Your actual files and model pipeline appear to be using this distinction correctly.
 
 The official scorer successfully validated all 12,000 predictions.
 
