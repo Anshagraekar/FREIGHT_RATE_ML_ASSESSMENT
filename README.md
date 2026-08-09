@@ -79,12 +79,12 @@ The final log-target CatBoost model achieved:
 ```
 Temporal validation
 ```
-|Fold     |Training Rows |Validation Rows|MAE     |RMSE    |R²    |
-|July     |28,806	 |4,912	         |$111.25 |$627.26 |0.8262|
-|August   |33,718	 |4,759	         |$99.21  |$615.09 |0.8261|
-|September|38,477	 |4,670	         |$110.62 |$619.04 |0.8349|
-|October  |43,147	 |4,853	         |$107.51 |$646.44 |0.8211|
-|Average  |—	         |—	         |$107.15 |$626.96 |0.8271|
+|Fold     |Training Rows  |Validation Rows        |MAE     |RMSE    |R²    |
+|July     |28,806	  |4,912	         |$111.25 |$627.26 |0.8262|
+|August   |33,718	  |4,759	         |$99.21  |$615.09 |0.8261|
+|September|38,477	  |4,670	         |$110.62 |$619.04 |0.8349|
+|October  |43,147	  |4,853	         |$107.51 |$646.44 |0.8211|
+|Average  |—	          |—	                 |$107.15 |$626.96 |0.8271|
 ```
 The temporal validation approach was chosen to better represent the real-world scenario of predicting future freight rates from historical observations.
 
