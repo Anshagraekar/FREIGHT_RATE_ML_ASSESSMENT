@@ -174,26 +174,26 @@ R²   : 0.8271
 ```
 This improvement in MAE was the main reason for selecting the log-target model.
 
-##Error Analysis
+## Error Analysis
 
 Model errors were analyzed by equipment type and shipment distance.
 ```
 Error by distance
-Distance	MAE
-<500 miles	$45.97
-500–1,000 miles	$71.11
-1,000–1,500 miles	$120.85
-1,500–2,000 miles	$162.18
-2,000–3,000 miles	$212.95
->3,000 miles	$148.30
+Distance	         MAE
+<500 miles	         $45.97
+500–1,000 miles	         $71.11
+1,000–1,500 miles        $120.85
+1,500–2,000 miles        $162.18
+2,000–3,000 miles        $212.95
+>3,000 miles	         $148.30
 ```
 Absolute error generally increases as shipment distance increases.
 ```
 Error by equipment
-Equipment	MAE
-Dry Van	$100.43
-Flatbed	$106.04
-Reefer	$124.99
+Equipment    MAE
+Dry Van	   $100.43
+Flatbed	   $106.04
+Reefer	   $124.99
 ```
 The largest individual errors were generally associated with unusually high-rate loads where the observed rate was substantially above the model prediction.
 
