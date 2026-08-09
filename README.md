@@ -438,13 +438,3 @@ Created chart: scorer_results\candidate_december.png
 Final validation metrics are calculated by Spotter after submission.
 
 The final deliverables therefore include the solution code, dependencies, run instructions, validated validation_predictions.csv, final model artifact, December prediction chart, and assessment report.
-
-
-### A couple of important notes before you paste it
-
-**1. Don't include the `data/` folder in GitHub**, as we decided. The README already explains that the assessment-provided data should be placed locally.
-
-**2. Keep the final model only:**
-
-```text
-outputs/models/catboost_final_log_target.cbm
