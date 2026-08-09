@@ -9,6 +9,8 @@ The solution was developed as part of a Machine Learning Engineer assessment and
 ## Overview
 
 The objective is to predict the `posted_rate` of freight loads from historical shipment information.
+Target:`posted_rate`
+Prediction/output column:`predicted_rate`
 
 The development dataset contains:
 
@@ -46,7 +48,7 @@ CatBoost provides strong performance on this type of mixed tabular data while re
 ### Why a log-transformed target?
 
 The target distribution is strongly right-skewed:
-
+```
 | Statistic | `posted_rate` |
 |---|---:|
 | Mean | $2,373.98 |
@@ -55,7 +57,7 @@ The target distribution is strongly right-skewed:
 | 95th percentile | $4,953.77 |
 | 99th percentile | $5,972.83 |
 | Maximum | $25,533.00 |
-
+```
 The long upper tail contains unusually high-rate loads.
 
 Training with:
@@ -70,19 +72,19 @@ Model Performance
 A temporal expanding-window validation strategy was used instead of a random train/test split.
 
 The final log-target CatBoost model achieved:
-
-Metric	Average
-MAE	$107.15
-RMSE	$626.96
-R²	0.8271
+```
+Metric|	Average
+MAE|	$107.15
+RMSE|	$626.96
+R²|	0.8271
 Temporal validation
-Fold	Training Rows	Validation Rows	MAE	RMSE	R²
-July	28,806	4,912	$111.25	$627.26	0.8262
-August	33,718	4,759	$99.21	$615.09	0.8261
-September	38,477	4,670	$110.62	$619.04	0.8349
-October	43,147	4,853	$107.51	$646.44	0.8211
+Fold|	Training Rows	Validation Rows	MAE	RMSE	R²
+July|	28,806	4,912	$111.25	$627.26	0.8262
+August|	33,718	4,759	$99.21	$615.09	0.8261
+September|	38,477	4,670	$110.62	$619.04	0.8349
+October|	43,147	4,853	$107.51	$646.44	0.8211
 Average	—	—	$107.15	$626.96	0.8271
-
+```
 The temporal validation approach was chosen to better represent the real-world scenario of predicting future freight rates from historical observations.
 
 EDA & Key Findings
@@ -97,9 +99,9 @@ Distance
 Distance was the strongest individual numerical predictor.
 
 Correlation with posted_rate:
-
+```
 distance          0.9085
-
+```
 This indicates that shipment distance is a major driver of freight rate.
 
 Data quality
@@ -121,9 +123,9 @@ Geographic analysis
 A Haversine distance feature was investigated.
 
 The supplied distance and calculated Haversine distance were highly correlated:
-
+```
 Correlation = 0.9995
-
+```
 Additional geographic features were tested during experimentation but did not consistently improve temporal validation performance.
 
 Feature Engineering
@@ -158,23 +160,23 @@ Model Experiments
 Several CatBoost configurations were evaluated.
 
 The best normal-target CatBoost experiment achieved approximately:
-
+```
 MAE  : $126.91
 RMSE : $628.49
 R²   : 0.8262
-
+```
 The final log-target approach improved MAE to approximately:
-
+```
 MAE  : $107.15
 RMSE : $626.96
 R²   : 0.8271
-
+```
 This improvement in MAE was the main reason for selecting the log-target model.
 
 Error Analysis
 
 Model errors were analyzed by equipment type and shipment distance.
-
+```
 Error by distance
 Distance	MAE
 <500 miles	$45.97
@@ -183,15 +185,15 @@ Distance	MAE
 1,500–2,000 miles	$162.18
 2,000–3,000 miles	$212.95
 >3,000 miles	$148.30
-
+```
 Absolute error generally increases as shipment distance increases.
-
+```
 Error by equipment
 Equipment	MAE
 Dry Van	$100.43
 Flatbed	$106.04
 Reefer	$124.99
-
+```
 The largest individual errors were generally associated with unusually high-rate loads where the observed rate was substantially above the model prediction.
 
 This indicates that the sparse high-rate tail remains the primary limitation of the current feature set.
@@ -199,7 +201,7 @@ This indicates that the sparse high-rate tail remains the primary limitation of 
 December 2025 Scenario
 
 The assessment includes a fixed December scenario where the shipment characteristics remain constant and only the date changes.
-
+```
 Fixed shipment
 Pickup:       Lexington
 Delivery:     Fort Wayne
@@ -207,7 +209,7 @@ Distance:     360 miles
 Equipment:    Dry Van
 Weight:       32,000 lb
 Period:       December 1–31, 2025
-
+```
 The final model generated predictions for all 31 days.
 
 December prediction statistics
@@ -221,18 +223,22 @@ Standard deviation	$3.25
 The official assessment scorer successfully validated all 31 December predictions and generated the required chart.
 
 The chart is available at:
-
+```
 scorer_results/candidate_december.png
-Final Prediction File
+```
+## Final Prediction File
 
 The final submission file is:
 
-validation_predictions.csv
+`validation_predictions.csv`
 
-It contains exactly two columns:
+The model predicts the `posted_rate` target. For submission, these predictions are stored in the `predicted_rate` column alongside the corresponding `load_id`.
 
+The file contains exactly two columns:
+
+```
 load_id,predicted_rate
-
+```
 The file contains:
 
 12,000 predictions
@@ -241,8 +247,18 @@ The file contains:
 0 missing predictions
 0 non-positive predictions
 
-The official scorer successfully validated all 12,000 predictions.
 
+Also, for December, `predicted_rate` is correct because that is the **output column** in `december-chart-inputs.csv`.
+
+So your terminology should consistently be:
+
+**Training target → `posted_rate`**  
+**Model output / submission → `predicted_rate`**
+
+Your actual files and model pipeline appear to be using this distinction correctly.
+
+The official scorer successfully validated all 12,000 predictions.
+```
 Repository Structure
 freight_rate_ml_assessment/
 │
@@ -267,69 +283,85 @@ freight_rate_ml_assessment/
 ├── requirements.txt
 ├── README.md
 └── Freight_Rate_ML_Assessment_Report.pdf
+```
 Installation
 
 Python 3.11 was used during development.
 
 Create and activate a virtual environment:
-
+```
 python -m venv .venv
+```
 Windows
+```
 .venv\Scripts\activate
+```
 macOS/Linux
+```
 source .venv/bin/activate
-
+```
 Install dependencies:
-
+```
 pip install -r requirements.txt
+```
+
 Running the Pipeline
 
 The assessment-provided datasets should be placed in the expected data/ directory locally.
 
 1. Exploratory Data Analysis
+```
 python src/eda.py
-
+```
 This performs dataset inspection, missing-value analysis, duplicate checks, target analysis, correlations, route analysis, and other exploratory checks.
 
 2. Feature Analysis
+```
 python src/features.py
-
+```
 This performs the feature engineering and geographic feature analysis used during experimentation.
 
 3. Model Experiments
+```
 python src/model_experiments.py
-
+```
 This evaluates the CatBoost configurations and temporal validation folds used for model selection.
 
 4. Error Analysis
+```
 python src/error_analysis.py
-
+```
 This analyzes prediction errors by distance and equipment and identifies high-error observations.
 
 5. Train the Final Model
+```
 python src/train.py
-
+```
 The final model is saved to:
-
+```
 outputs/models/catboost_final_log_target.cbm
+```
 6. Generate Validation Predictions
+```
 python src/predict.py
-
+```
 The final validation predictions are generated for all 12,000 validation loads.
 
 The submission file must contain:
-
 load_id,predicted_rate
-7. Generate December Predictions
-python src/predict_december.py
 
+7. Generate December Predictions
+```
+python src/predict_december.py
+```
 This generates predictions for the fixed December scenario.
 
 8. Inspect December Predictions
+```
 python src/inspect_december.py
-
+```
 This checks:
-
+```
 Number of rows
 Required columns
 Missing values
@@ -337,11 +369,11 @@ Duplicate rows
 Date range
 Prediction completeness
 Validation
-
+```
 The solution uses an expanding-window temporal validation strategy.
 
 For each validation month:
-
+```
 Train on historical months
         ↓
 Predict the next month
@@ -351,13 +383,13 @@ Calculate MAE / RMSE / R²
 Expand training window
         ↓
 Repeat
-
+```
 This avoids using future observations to predict earlier periods and better reflects the intended forecasting setting.
 
 Reproducibility
 
 The repository separates the major stages of the workflow:
-
+```
 EDA
  ↓
 Data Quality Checks
@@ -375,7 +407,7 @@ Final Model Training
 Validation Prediction
  ↓
 December Scenario Prediction
-
+```
 The final model artifact and prediction file are included as submission outputs.
 
 Limitations & Future Improvements
