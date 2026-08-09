@@ -67,7 +67,7 @@ log1p(posted_rate)
 ```
 and converting predictions back to the original dollar scale improved the typical absolute prediction error.
 
-Model Performance
+## Model Performance
 
 A temporal expanding-window validation strategy was used instead of a random train/test split.
 
@@ -87,7 +87,7 @@ Average	—	—	$107.15	$626.96	0.8271
 ```
 The temporal validation approach was chosen to better represent the real-world scenario of predicting future freight rates from historical observations.
 
-EDA & Key Findings
+## EDA & Key Findings
 Target distribution
 
 The target is strongly right-skewed, with a relatively small number of very high-rate loads.
@@ -128,7 +128,7 @@ Correlation = 0.9995
 ```
 Additional geographic features were tested during experimentation but did not consistently improve temporal validation performance.
 
-Feature Engineering
+## Feature Engineering
 
 The following features were investigated:
 
@@ -155,7 +155,7 @@ The experiments showed that adding a large number of engineered features did not
 
 This led to a preference for the simpler feature representation used by the final model.
 
-Model Experiments
+##Model Experiments
 
 Several CatBoost configurations were evaluated.
 
@@ -173,7 +173,7 @@ R²   : 0.8271
 ```
 This improvement in MAE was the main reason for selecting the log-target model.
 
-Error Analysis
+##Error Analysis
 
 Model errors were analyzed by equipment type and shipment distance.
 ```
@@ -198,7 +198,7 @@ The largest individual errors were generally associated with unusually high-rate
 
 This indicates that the sparse high-rate tail remains the primary limitation of the current feature set.
 
-December 2025 Scenario
+## December 2025 Scenario
 
 The assessment includes a fixed December scenario where the shipment characteristics remain constant and only the date changes.
 ```
@@ -258,8 +258,9 @@ So your terminology should consistently be:
 Your actual files and model pipeline appear to be using this distinction correctly.
 
 The official scorer successfully validated all 12,000 predictions.
+
+## Repository Structure
 ```
-Repository Structure
 freight_rate_ml_assessment/
 │
 ├── src/
@@ -284,7 +285,7 @@ freight_rate_ml_assessment/
 ├── README.md
 └── Freight_Rate_ML_Assessment_Report.pdf
 ```
-Installation
+## Installation
 
 Python 3.11 was used during development.
 
@@ -305,7 +306,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Running the Pipeline
+## Running the Pipeline
 
 The assessment-provided datasets should be placed in the expected data/ directory locally.
 
@@ -361,15 +362,15 @@ This generates predictions for the fixed December scenario.
 python src/inspect_december.py
 ```
 This checks:
-```
+
 Number of rows
 Required columns
 Missing values
 Duplicate rows
 Date range
 Prediction completeness
-Validation
-```
+
+## Validation
 The solution uses an expanding-window temporal validation strategy.
 
 For each validation month:
@@ -386,7 +387,7 @@ Repeat
 ```
 This avoids using future observations to predict earlier periods and better reflects the intended forecasting setting.
 
-Reproducibility
+## Reproducibility
 
 The repository separates the major stages of the workflow:
 ```
@@ -410,7 +411,7 @@ December Scenario Prediction
 ```
 The final model artifact and prediction file are included as submission outputs.
 
-Limitations & Future Improvements
+## Limitations & Future Improvements
 
 The main limitation is the sparse high-rate tail of the target distribution.
 
@@ -428,7 +429,7 @@ Additional production monitoring for model drift
 
 These improvements would require additional historical or external market data beyond the assessment dataset.
 
-Assessment Outcome
+## Assessment Outcome
 
 The complete prediction pipeline was successfully validated using the provided scoring utility:
 
